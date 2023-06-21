@@ -1,6 +1,10 @@
 package controller;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -11,94 +15,125 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import controllerr.Showdata;
 public class Studentinfo {
-	
-	
-	public static 
-	
- void sho() throws SQLException{
-		 
-		 Connection connection = null;
-	     try {
-	         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Studentt", "root", "abc123");
-	     } catch (SQLException e) {
-	         e.printStackTrace();
-	     }
-	     // Create a statement to execute SQL queries
-	     Statement statement = null;
-	     try {
-	         statement = connection.createStatement();
-	     } catch (SQLException e) {
-	         e.printStackTrace();
-	     }
-	     // Execute a SELECT query to get data from the database
-	     String sql = "SELECT * FROM stu";
-	     ResultSet resultSet = null;
-	     try {
-	         resultSet = statement.executeQuery(sql);
-	     } catch (SQLException e) {
-	         e.printStackTrace();
-	     }
-	     // Create a JFrame to display the data
-	     JFrame frame = new JFrame("SHOW DATA");
-	//     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	     // Create a JTable to display the data
-	     JTable table = new JTable(buildTableModel(resultSet));
-	     // Add the JTable to the JFrame
-	     frame.add(new JScrollPane(table));
-	     // Display the JFrame
-	     frame.pack();
-			frame.setSize(500, 200);
 
-	     frame.setVisible(true);
-	 }
-	 private static DefaultTableModel buildTableModel(ResultSet resultSet) throws SQLException {
-	     // Create a table model to hold the data
-	     DefaultTableModel tableModel = new DefaultTableModel();
-	     // Get the column names from the database
-	     ResultSetMetaData metaData = resultSet.getMetaData();
-	     for (int i = 1; i <= metaData.getColumnCount(); i++) {
-	         tableModel.addColumn(metaData.getColumnName(i));
-	     }
-	     // Get the data from the database
-	     while (resultSet.next()) {
-	         // Create a new row in the table model
-	         Object[] row = new Object[tableModel.getColumnCount()];
-	         for (int i = 0; i < row.length; i++) {
-	             row[i] = resultSet.getObject(i + 1);
-	         }
-	         tableModel.addRow(row);
-	     }
-	     return tableModel;
+	
 
-		
-		
-		
-		
-		
+	public static	void sho() throws SQLException {
+
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Studentt", "root", "abc123");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// Create a statement to execute SQL queries
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// Execute a SELECT query to get data from the database
+		String sql = "SELECT * FROM stu";
+		ResultSet resultSet = null;
+		try {
+			resultSet = statement.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// Create a JFrame to display the data
+		JFrame f = new JFrame("SHOW DATA");
+		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Create a JTable to display the data
+		JTable table = new JTable(buildTableModel(resultSet));
+		table.setFont(new Font("algerian", Font.BOLD, 14));
+
+		// table.setBounds(100, 20, 190, 40);
+
+		// Add the JTable to the JFrame
+		f.add(new JScrollPane(table));
+
+		// Display the JFrame
+		f.pack();
+		f.setBounds(00, 870, 400, 160);
+
+		f.setVisible(true);
+	}
+
+	private static DefaultTableModel buildTableModel(ResultSet resultSet) throws SQLException {
+		// Create a table model to hold the data
+		DefaultTableModel tableModel = new DefaultTableModel();
+		// Get the column names from the database
+		ResultSetMetaData metaData = resultSet.getMetaData();
+		for (int i = 1; i <= metaData.getColumnCount(); i++) {
+			tableModel.addColumn(metaData.getColumnName(i));
+
+		}
+		// Get the data from the database
+		while (resultSet.next()) {
+			// Create a new row in the table model
+			Object[] row = new Object[tableModel.getColumnCount()];
+			for (int i = 0; i < row.length; i++) {
+				row[i] = resultSet.getObject(i + 1);
+			}
+			tableModel.addRow(row);
+		}
+		return tableModel;
+
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+       
 
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		System.out.println("Driver registered");
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Studentt", "root", "abc123");
 		Statement st = con.createStatement();
+		SwingUtilities.invokeLater(() -> {
+
+		
+		
+        // Create a custom JPanel with background image
+       
+
 
 		JFrame f = new JFrame("STUDENT INFO");
+	//	f.setSize(400, 1050);
+
+	
+		
+		
+		
+		 JPanel panel = new JPanel() {
+             @Override
+             protected void paintComponent(Graphics g) {
+                 super.paintComponent(g);
+                 Image image = new ImageIcon("C:\\Users\\ASUS\\Downloads\\for elcsipse.jpg").getImage();
+                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+             }
+         };
+
+         // Set the layout manager for the panel
+         panel.setLayout(null);
+		
+
 		JLabel ins = new JLabel(" INSERT  DATA");
 		ins.setFont(new Font("Algerian", Font.BOLD, 20));
+        ins.setForeground(Color.black); // Set the font color
 		ins.setBounds(100, 20, 190, 40);
 
 		JTextField tx = new JTextField();
@@ -156,11 +191,10 @@ public class Studentinfo {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(b, "DATA not INSERTED");
 				}
-                tx.setText(""); 
-                tx1.setText(""); 
-                tx2.setText(""); 
+				tx.setText("");
+				tx1.setText("");
+				tx2.setText("");
 
-				
 			}
 		});
 
@@ -176,7 +210,7 @@ public class Studentinfo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				ResultSet rs =null;
+				ResultSet rs = null;
 				try {
 					rs = st.executeQuery("SELECT * FROM stu");
 					while (rs.next()) {
@@ -188,13 +222,12 @@ public class Studentinfo {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				  try {
+				try {
 					sho();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 
 			}
 
@@ -259,8 +292,7 @@ public class Studentinfo {
 					System.out.println("Enter the no. :" + p);
 
 				}
-                tx3.setText(""); 
-
+				tx3.setText("");
 
 			}
 		});
@@ -306,8 +338,7 @@ public class Studentinfo {
 					System.out.println("Enter the no. :" + p);
 
 				}
-                tx4.setText(""); 
-
+				tx4.setText("");
 
 			}
 		});
@@ -370,9 +401,8 @@ public class Studentinfo {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-                tx5.setText(""); 
-                tx6.setText(""); 
-
+				tx5.setText("");
+				tx6.setText("");
 
 			}
 		});
@@ -408,48 +438,51 @@ public class Studentinfo {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-                tx5.setText(""); 
-                tx7.setText(""); 
+
+				tx5.setText("");
+				tx7.setText("");
 
 			}
 		});
 
-		f.add(ins);
-		f.add(sho);
-		f.add(sear);
-		f.add(del);
-		f.add(up);
+		panel.add(ins);
+		panel.add(sho);
+		panel.add(sear);
+		panel.add(del);
+		panel.add(up);
 
-		f.add(b);
-		f.add(delete);
-		f.add(sh);
-		f.add(search);
-		f.add(upd);
-		f.add(upd1);
+		panel.add(b);
+		panel.add(delete);
+		panel.add(sh);
+		panel.add(search);
+		panel.add(upd);
+		panel.add(upd1);
 
-		f.add(tx);
-		f.add(tx1);
-		f.add(tx2);
-		f.add(tx3);
-		f.add(tx4);
-		f.add(tx5);
-		f.add(tx6);
-		f.add(tx7);
+		panel.add(tx);
+		panel.add(tx1);
+		panel.add(tx2);
+		panel.add(tx3);
+		panel.add(tx4);
+		panel.add(tx5);
+		panel.add(tx6);
+		panel.add(tx7);
 
-		f.add(lb);
-		f.add(lb1);
-		f.add(lb2);
-		f.add(lb3);
-		f.add(lb4);
-		f.add(lb5);
-		f.add(lb6);
-		f.add(lb7);
-		f.add(lb8);
+		panel.add(lb);
+		panel.add(lb1);
+		panel.add(lb2);
+		panel.add(lb3);
+		panel.add(lb4);
+		panel.add(lb5);
+		panel.add(lb6);
+		panel.add(lb7);
+		panel.add(lb8);
 
-		f.setSize(400, 1000);
-		f.setLayout(null);
+        f.add(panel);
+        f.setSize(400, 1050);
+
+		//f.setLayout(null);
 		f.setVisible(true);
+        });
 
 	}
 
